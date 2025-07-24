@@ -1,0 +1,4 @@
+# Place your Envato Elements session cookies here
+# You can get these from your browser's developer tools under Application > Cookies
+# Example format:
+# session_id=your_session_id; auth_token=your_auth_token; user_id=your_user_id
