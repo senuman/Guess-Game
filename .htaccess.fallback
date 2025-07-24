@@ -1,0 +1,21 @@
+# Fallback .htaccess for servers with limited support
+# If the main .htaccess doesn't work, try renaming this to .htaccess
+
+RewriteEngine On
+
+# Simple rewrite rule - everything goes to proxy.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !/debug\.php$
+RewriteCond %{REQUEST_URI} !/test\.php$
+RewriteCond %{REQUEST_URI} !/proxy\.php$
+RewriteRule ^(.*)$ proxy.php [L]
+
+# Hide sensitive files
+<Files "cookies.txt">
+    deny from all
+</Files>
+
+<Files ".htaccess*">
+    deny from all
+</Files>

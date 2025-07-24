@@ -1,6 +1,6 @@
 RewriteEngine On
 
-# Enable error reporting for debugging
+# Enable error reporting for debugging (uncomment these lines if needed)
 # php_flag display_errors on
 # php_value error_reporting E_ALL
 
@@ -10,17 +10,47 @@ php_value memory_limit 512M
 php_value upload_max_filesize 100M
 php_value post_max_size 100M
 
-# Route all requests through proxy.php except for actual files
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_URI} !^/(proxy\.php|debug\.php|cookies\.txt)$
-RewriteRule ^(.*)$ proxy.php [L,QSA]
+# Security headers
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
 
 # Prevent direct access to sensitive files
 <Files "cookies.txt">
-    Order allow,deny
-    Deny from all
+    Require all denied
 </Files>
+
+<Files "*.php">
+    <RequireAll>
+        Require all granted
+        Require not ip 192.168.1.0/24
+    </RequireAll>
+</Files>
+
+# Allow specific PHP files to be accessed directly
+RewriteCond %{REQUEST_URI} ^/(debug\.php|test\.php)$ [NC]
+RewriteRule ^ - [L]
+
+# Handle favicon requests
+RewriteCond %{REQUEST_URI} ^/favicon\.ico$ [NC]
+RewriteRule ^ - [L]
+
+# Handle robots.txt
+RewriteCond %{REQUEST_URI} ^/robots\.txt$ [NC]
+RewriteRule ^ - [L]
+
+# Skip rewrite for actual files and directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Skip proxy.php itself to prevent infinite loops
+RewriteCond %{REQUEST_URI} ^/proxy\.php$ [NC]
+RewriteRule ^ - [L]
+
+# Main proxy rule - catch everything else
+RewriteCond %{REQUEST_URI} !^/(debug\.php|test\.php|favicon\.ico|robots\.txt)$ [NC]
+RewriteRule ^(.*)$ proxy.php [L,QSA,E=ORIGINAL_URI:$1]
 
 # Enable compression for better performance
 <IfModule mod_deflate.c>
@@ -33,6 +63,7 @@ RewriteRule ^(.*)$ proxy.php [L,QSA]
     AddOutputFilterByType DEFLATE application/rss+xml
     AddOutputFilterByType DEFLATE application/javascript
     AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
 </IfModule>
 
 # Cache static content
@@ -42,7 +73,14 @@ RewriteRule ^(.*)$ proxy.php [L,QSA]
     ExpiresByType image/jpg "access plus 1 month"
     ExpiresByType image/jpeg "access plus 1 month"
     ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
     ExpiresByType application/pdf "access plus 1 month"
     ExpiresByType text/css "access plus 1 month"
     ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/json "access plus 1 week"
 </IfModule>
+
+# Error pages
+ErrorDocument 404 /proxy.php
+ErrorDocument 403 /proxy.php

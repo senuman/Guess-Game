@@ -6,12 +6,32 @@ $cookies = file_exists($cookiesFile) ? trim(file_get_contents($cookiesFile)) : '
 $targetBase = 'https://elements.envato.com/';
 $path = $_SERVER['REQUEST_URI'];
 
+// Handle both direct access (proxy.php/path) and .htaccess rewrites (/path)
+if (strpos($path, '/proxy.php/') === 0) {
+    // Direct access: proxy.php/graphics/photo-123
+    $path = substr($path, 10); // Remove '/proxy.php'
+} elseif (strpos($path, '/proxy.php') === 0) {
+    // Handle proxy.php?path=something or just proxy.php
+    if (isset($_GET['path'])) {
+        $path = '/' . ltrim($_GET['path'], '/');
+    } else {
+        $path = '/';
+    }
+}
+
 // Clean the path - remove query parameters for cleaner URL construction
 $cleanPath = parse_url($path, PHP_URL_PATH);
 $queryString = parse_url($path, PHP_URL_QUERY);
+
+// Remove leading slash and construct target URL
 $targetURL = $targetBase . ltrim($cleanPath, '/');
 if ($queryString) {
     $targetURL .= '?' . $queryString;
+}
+
+// If path is empty or just '/', redirect to graphics page
+if (empty($cleanPath) || $cleanPath === '/') {
+    $targetURL = $targetBase . 'graphics';
 }
 
 // Initialize cURL with better options for downloads
