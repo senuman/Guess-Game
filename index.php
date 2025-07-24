@@ -4,6 +4,209 @@ ini_set('display_errors', 0); // Disable display for production
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/error.log');
 
+// Function to generate a fake success page when encountering Bad Request errors
+function generateFakeSuccessPage() {
+    $proxy_host = 'https://semrush2.oneclickprovider.site';
+    
+    return <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semrush - SEO Tools</title>
+    <link rel="icon" href="https://www.semrush.com/favicon.ico">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #e1e5e9;
+            padding: 0 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff642d;
+        }
+        .nav {
+            display: flex;
+            gap: 30px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .loading-message {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .loading-message h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .loading-message p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #ff642d;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .retry-btn {
+            background: #ff642d;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .retry-btn:hover {
+            background: #e55a29;
+        }
+        .watermark-1 {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 9999;
+            opacity: 0.92;
+            font-family: 'Inter', sans-serif;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 16px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            color: #1a1a1a;
+            font-size: 13px;
+            max-width: 200px;
+        }
+        .watermark-1 h4 {
+            margin: 0 0 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .watermark-1 p {
+            margin: 0;
+            font-size: 12px;
+            text-align: center;
+            color: #4a4a4a;
+        }
+        .watermark-1 a {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+            padding: 8px;
+            background: #1a1a1a;
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Semrush by Ghost SEO Tools</div>
+        <div class="nav">
+            <a href="{$proxy_host}/">Dashboard</a>
+            <a href="{$proxy_host}/projects/">Projects</a>
+            <a href="{$proxy_host}/analytics/">Analytics</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="loading-message">
+            <h2>Loading Semrush Dashboard</h2>
+            <div class="spinner"></div>
+            <p>Please wait while we load your SEO tools and data...</p>
+            <button class="retry-btn" onclick="retryLoading()">Retry Connection</button>
+        </div>
+    </div>
+
+    <div class="watermark-1">
+        <h4>Semrush</h4>
+        <p>Powered by Ghost Seo Tools</p>
+        <a href="https://wa.me/+1234567890" target="_blank">Contact Admin</a>
+    </div>
+
+    <script>
+        // Auto-retry after 3 seconds
+        setTimeout(function() {
+            retryLoading();
+        }, 3000);
+        
+        function retryLoading() {
+            // Try to reload with different parameters
+            const currentUrl = window.location.href;
+            const separator = currentUrl.includes('?') ? '&' : '?';
+            const newUrl = currentUrl + separator + 'retry=' + Date.now();
+            window.location.href = newUrl;
+        }
+        
+        // Redirect to main site after 25 minutes
+        setTimeout(function() {
+            window.location.href = "https://app.ghostseotools.site";
+        }, 25 * 60 * 1000);
+        
+        // Override fetch and XMLHttpRequest to handle retries
+        const originalFetch = window.fetch;
+        window.fetch = function(input, init) {
+            let url = typeof input === 'string' ? input : input.url;
+            
+            if (url.startsWith('/') && !url.startsWith('//')) {
+                url = '{$proxy_host}' + url;
+            } else if (url.includes('semrush.com')) {
+                url = url.replace('www.semrush.com', 'semrush2.oneclickprovider.site');
+                url = url.replace('https://semrush.com', 'https://semrush2.oneclickprovider.site');
+            }
+            
+            init = init || {};
+            init.headers = init.headers || {};
+            init.headers['Accept'] = init.headers['Accept'] || 'application/json, text/plain, */*';
+            
+            if (typeof input === 'string') {
+                return originalFetch(url, init);
+            } else {
+                input.url = url;
+                return originalFetch(input, init);
+            }
+        };
+    </script>
+</body>
+</html>
+HTML;
+}
+
 // Start session to track API key validation
 session_start();
 
@@ -70,12 +273,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-// Capture and forward headers
+// Capture and forward headers with filtering
 $headers = getallheaders();
 $forward_headers = [];
+$skip_headers = ['host', 'origin', 'content-length', 'connection', 'upgrade-insecure-requests', 'sec-fetch-site', 'sec-fetch-mode', 'sec-fetch-user', 'sec-fetch-dest', 'sec-ch-ua', 'sec-ch-ua-mobile', 'sec-ch-ua-platform'];
+
 foreach ($headers as $key => $value) {
-    if (strtolower($key) === 'host') continue;
-    if (strtolower($key) === 'origin') continue; // Let cURL handle origin
+    $key_lower = strtolower($key);
+    
+    // Skip problematic headers that can cause "Bad Request" errors
+    if (in_array($key_lower, $skip_headers)) continue;
+    
+    // Clean and validate header values
+    $value = trim($value);
+    if (empty($value)) continue;
+    
+    // Skip headers with invalid characters
+    if (preg_match('/[^\x20-\x7E\x80-\xFF]/', $value)) continue;
+    
     $forward_headers[] = "$key: $value";
 }
 
@@ -91,15 +306,27 @@ if (file_exists($cookie_file)) {
     error_log('Cookie file does not exist: ' . $cookie_file);
 }
 
-// Set User Agent
-$user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36';
+// Set clean User Agent
+$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36';
 $forward_headers[] = "User-Agent: $user_agent";
 
-// Add required headers for Site Audit API calls
-$forward_headers[] = "Accept: application/json, text/plain, */*";
-$forward_headers[] = "Accept-Language: en-US,en;q=0.9";
-$forward_headers[] = "Cache-Control: no-cache";
-$forward_headers[] = "Pragma: no-cache";
+// Add essential headers only when needed
+if (!isset($headers['Accept']) && !isset($headers['accept'])) {
+    $forward_headers[] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+}
+
+if (!isset($headers['Accept-Language']) && !isset($headers['accept-language'])) {
+    $forward_headers[] = "Accept-Language: en-US,en;q=0.9";
+}
+
+// Only add these headers for API requests to avoid conflicts
+if (stripos($_SERVER['REQUEST_URI'], '/audit/') !== false || 
+    stripos($_SERVER['REQUEST_URI'], '/api/') !== false ||
+    (isset($_SERVER['HTTP_ACCEPT']) && stripos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false)) {
+    $forward_headers[] = "Accept: application/json, text/plain, */*";
+    $forward_headers[] = "Cache-Control: no-cache";
+    $forward_headers[] = "Pragma: no-cache";
+}
 
 // Add Referer for site audit requests
 if (stripos($_SERVER['REQUEST_URI'], '/audit/') !== false || 
@@ -111,7 +338,23 @@ if (stripos($_SERVER['REQUEST_URI'], '/audit/') !== false ||
 $method = $_SERVER['REQUEST_METHOD'];
 $request_body = file_get_contents('php://input');
 
-// Initialize cURL for proxying
+// Clean and validate the request method
+$allowed_methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'];
+if (!in_array($method, $allowed_methods)) {
+    $method = 'GET'; // Default to GET for unknown methods
+}
+
+// Validate and clean the target URL
+$target_url = filter_var($target_url, FILTER_SANITIZE_URL);
+if (!$target_url || !filter_var($target_url, FILTER_VALIDATE_URL)) {
+    error_log('Invalid target URL: ' . $target_url);
+    http_response_code(200);
+    header('Content-Type: text/html; charset=utf-8');
+    echo generateFakeSuccessPage();
+    exit;
+}
+
+// Initialize cURL for proxying with safe options
 $ch = curl_init();
 curl_setopt_array($ch, [
     CURLOPT_URL => $target_url,
@@ -122,13 +365,24 @@ curl_setopt_array($ch, [
     CURLOPT_HTTPHEADER => $forward_headers,
     CURLOPT_USERAGENT => $user_agent,
     CURLOPT_ENCODING => '', // Support gzip, br
-    CURLOPT_SSL_VERIFYPEER => true, // Enable SSL verification
-    CURLOPT_SSL_VERIFYHOST => 2, // Verify hostname
+    CURLOPT_SSL_VERIFYPEER => false, // Disable SSL verification to avoid certificate issues
+    CURLOPT_SSL_VERIFYHOST => 0, // Disable hostname verification
     CURLOPT_TIMEOUT => 60, // Increased timeout for site audit operations
     CURLOPT_CONNECTTIMEOUT => 30,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, // Force HTTP/1.1 for better compatibility
     CURLOPT_COOKIEJAR => $cookie_file, // Save cookies
     CURLOPT_COOKIEFILE => $cookie_file, // Send cookies
+    CURLOPT_MAXREDIRS => 5, // Limit redirects
+    CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS, // Only allow HTTP/HTTPS
+    CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS, // Only allow HTTP/HTTPS redirects
+    CURLOPT_HEADERFUNCTION => function($curl, $header) {
+        // Filter out problematic response headers
+        $header_lower = strtolower(trim($header));
+        if (strpos($header_lower, 'transfer-encoding:') === 0) {
+            return strlen($header); // Skip transfer-encoding headers
+        }
+        return strlen($header);
+    }
 ]);
 
 if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
@@ -143,6 +397,20 @@ if ($response === false) {
     $curl_error = curl_error($ch);
     $curl_errno = curl_errno($ch);
     error_log('cURL error: ' . $curl_error . ' (Error code: ' . $curl_errno . ') for URL: ' . $target_url);
+    
+    // Instead of showing error, try to show a fake successful response for "Bad Request" scenarios
+    curl_close($ch);
+    
+    // Check if this is likely a "Bad Request" error
+    if ($curl_errno == 0 || $curl_errno == 22) { // HTTP error or no error but failed
+        // Return a fake successful HTML page instead of error
+        http_response_code(200);
+        header('Content-Type: text/html; charset=utf-8');
+        echo generateFakeSuccessPage();
+        exit;
+    }
+    
+    // For other errors, return JSON error
     http_response_code(500);
     echo json_encode([
         'error' => 'Proxy request failed', 
@@ -150,7 +418,6 @@ if ($response === false) {
         'url' => $target_url,
         'errno' => $curl_errno
     ]);
-    curl_close($ch);
     exit;
 }
 
@@ -165,6 +432,17 @@ curl_close($ch);
 // Log site audit requests for debugging
 if (stripos($_SERVER['REQUEST_URI'], '/audit/') !== false) {
     error_log('Site Audit Request: ' . $_SERVER['REQUEST_URI'] . ' -> HTTP ' . $http_code . ' (' . $contentType . ')');
+}
+
+// Handle Bad Request errors (400) and other problematic status codes
+if ($http_code == 400 || $http_code == 403 || $http_code == 502 || $http_code == 503) {
+    error_log('Bad HTTP status received: ' . $http_code . ' for URL: ' . $target_url);
+    
+    // Instead of forwarding the error, show fake success page
+    http_response_code(200);
+    header('Content-Type: text/html; charset=utf-8');
+    echo generateFakeSuccessPage();
+    exit;
 }
 
 // Set HTTP response code

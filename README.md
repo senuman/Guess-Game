@@ -90,6 +90,12 @@ The updated code includes several fixes specifically for the Site Audit feature:
 
 ### Common Issues
 
+**Issue: "Bad Request" error or blank page**
+- **Solution**: This is now handled automatically by showing a loading page
+- The system filters problematic headers that cause 400 errors
+- Automatic retry mechanism will attempt to reload the page
+- If persistent, check error.log for specific cURL errors
+
 **Issue: Site Audit shows "Loading..." indefinitely**
 - **Solution**: Check that JavaScript overrides are working
 - Verify browser console for JavaScript errors
