@@ -1,0 +1,274 @@
+{
+  "platform_configs": {
+    "suno_ai": {
+      "name": "Suno AI 4.5+",
+      "limits": {
+        "title": {
+          "max_chars": "unlimited",
+          "format": "plain_text",
+          "recommendations": "Keep concise but descriptive"
+        },
+        "lyrics": {
+          "max_chars": 5000,
+          "includes": "lyrics + metatags + production notes",
+          "format": "structured_with_timestamps"
+        },
+        "style_prompt": {
+          "max_chars": 1000,
+          "format": "descriptive_text",
+          "priority_elements": [
+            "genre",
+            "tempo_bpm",
+            "key",
+            "instruments",
+            "vocal_style",
+            "production_quality"
+          ]
+        }
+      },
+      "optimal_settings": {
+        "version": "V4.5 or higher",
+        "quality": "High",
+        "duration": "Full length",
+        "instrumental": false
+      },
+      "template": {
+        "title": "# AI Music Cloning System v7.0 - Ultimate Analysis Complete\\n{song_title}",
+        "lyrics": "# {timestamp} [{section}][Instruments: {instruments}]\\n— Production Note: {production_note}\\n{special_notes}\\n{lyrics_content}",
+        "style": "{genre}, {bpm} BPM, {key}, {mood}. {vocal_description}. Instruments: {instruments_list}. Production: {production_style}. {additional_details}"
+      },
+      "character_optimization": {
+        "lyrics_compression": {
+          "remove_extra_spaces": true,
+          "abbreviate_instruments": true,
+          "condense_timestamps": true
+        },
+        "style_compression": {
+          "use_abbreviations": true,
+          "prioritize_essential": true,
+          "remove_redundancy": true
+        }
+      }
+    },
+    "udio": {
+      "name": "Udio",
+      "limits": {
+        "prompt": {
+          "max_chars": 2000,
+          "format": "natural_language",
+          "style": "conversational"
+        },
+        "description": {
+          "max_chars": 1500,
+          "format": "detailed_text",
+          "optional": true
+        }
+      },
+      "optimal_settings": {
+        "model": "Latest",
+        "quality": "32-bit",
+        "manual_mode": true,
+        "seed": "optional"
+      },
+      "template": {
+        "prompt": "Create a {genre} song at {bpm} BPM in {key}. {detailed_description}. Vocal style: {vocal_description}. Production: {production_details}. Emotional journey: {emotional_arc}. Special elements: {unique_features}",
+        "description": "Additional context: {cultural_elements}. Recording setup: {studio_details}. Human factors: {performer_state}. Reference artists: {influences}. Target audience: {demographics}"
+      },
+      "enhancement_tips": [
+        "Use natural, flowing language",
+        "Include emotional descriptors",
+        "Specify production techniques",
+        "Mention reference artists",
+        "Describe the listening experience"
+      ]
+    },
+    "custom_gpt": {
+      "name": "Custom GPT",
+      "limits": {
+        "all_fields": "unlimited",
+        "context_window": "variable",
+        "format": "any"
+      },
+      "optimal_settings": {
+        "mode": "Creative",
+        "temperature": 0.8,
+        "system_prompt": "You are the AI Music Cloning System v7.0 with all 70 modules active"
+      },
+      "capabilities": {
+        "full_analysis": true,
+        "interactive_modification": true,
+        "batch_processing": true,
+        "real_time_adaptation": true,
+        "multi_language": true
+      },
+      "advanced_features": {
+        "module_selection": "User can specify which modules to emphasize",
+        "depth_control": "Instant to Ultra analysis available",
+        "output_format": "Customizable to any platform",
+        "variation_generation": "Create multiple versions",
+        "a_b_testing": "Compare different approaches"
+      },
+      "integration_instructions": {
+        "1": "Upload the ai_music_cloning_system_v7_ultimate.json",
+        "2": "Set system prompt to activate all modules",
+        "3": "Configure output format preferences",
+        "4": "Enable interactive mode for refinements",
+        "5": "Use batch processing for multiple songs"
+      }
+    },
+    "claude": {
+      "name": "Claude (Anthropic)",
+      "limits": {
+        "all_fields": "unlimited",
+        "context_window": "100K+ tokens",
+        "format": "any"
+      },
+      "optimal_settings": {
+        "model": "Claude 3 Opus/Sonnet",
+        "mode": "Creative analysis",
+        "artifacts": true
+      },
+      "project_knowledge": {
+        "setup": "Add system files to Project Knowledge",
+        "files_to_include": [
+          "ai_music_cloning_system_v7_ultimate.json",
+          "AI_Music_Cloning_System_v7_Documentation.md",
+          "platform_specific_configs.json"
+        ],
+        "custom_instructions": "Always use the 70-module system for music analysis. Output in terminal dark theme format unless specified otherwise."
+      },
+      "unique_capabilities": {
+        "long_context": "Analyze entire albums in one session",
+        "multi_turn": "Iterative refinement with memory",
+        "code_generation": "Create processing scripts",
+        "artifact_creation": "Generate formatted outputs",
+        "reasoning": "Explain analysis decisions"
+      },
+      "prompt_template": "Analyze this song using the AI Music Cloning System v7.0:\\n\\nSong: {song_info}\\nDepth: {analysis_depth}\\nTarget Platform: {platform}\\nSpecial Requirements: {requirements}\\n\\nProvide the complete terminal dark theme output with all three blocks."
+    }
+  },
+  "cross_platform_features": {
+    "auto_detection": {
+      "enabled": true,
+      "detection_method": "context_analysis",
+      "fallback": "suno_ai"
+    },
+    "format_conversion": {
+      "suno_to_udio": {
+        "expand_prompt": true,
+        "add_conversational_tone": true,
+        "include_description": true
+      },
+      "udio_to_suno": {
+        "compress_prompt": true,
+        "extract_essentials": true,
+        "optimize_characters": true
+      },
+      "any_to_gpt": {
+        "preserve_all_data": true,
+        "add_module_tags": true,
+        "enable_interaction": true
+      }
+    },
+    "quality_preservation": {
+      "lossy_compression": "intelligent",
+      "priority_system": "weighted",
+      "fallback_options": "graceful"
+    }
+  },
+  "optimization_strategies": {
+    "character_limits": {
+      "compression_algorithms": [
+        "abbreviation_mapping",
+        "redundancy_removal",
+        "smart_truncation",
+        "priority_weighting"
+      ],
+      "preservation_priorities": [
+        "musical_accuracy",
+        "emotional_content",
+        "technical_details",
+        "cultural_elements"
+      ]
+    },
+    "output_enhancement": {
+      "suno_ai": {
+        "focus": "Clear structure and timestamps",
+        "avoid": "Excessive technical jargon"
+      },
+      "udio": {
+        "focus": "Natural, descriptive language",
+        "avoid": "Rigid formatting"
+      },
+      "gpt_claude": {
+        "focus": "Complete analysis depth",
+        "avoid": "Platform limitations"
+      }
+    }
+  },
+  "batch_processing": {
+    "supported_platforms": ["custom_gpt", "claude"],
+    "batch_size": {
+      "recommended": 10,
+      "maximum": 50
+    },
+    "output_formats": [
+      "individual_files",
+      "combined_json",
+      "csv_export",
+      "markdown_collection"
+    ],
+    "automation_features": {
+      "playlist_analysis": true,
+      "album_coherence": true,
+      "style_evolution": true,
+      "market_trends": true
+    }
+  },
+  "api_integration": {
+    "webhooks": {
+      "analysis_complete": "/webhook/analysis",
+      "batch_ready": "/webhook/batch",
+      "error_notification": "/webhook/error"
+    },
+    "rest_endpoints": {
+      "analyze": "/api/v7/analyze",
+      "convert": "/api/v7/convert",
+      "batch": "/api/v7/batch",
+      "status": "/api/v7/status"
+    },
+    "authentication": {
+      "method": "bearer_token",
+      "rate_limits": "1000/hour",
+      "quota_tracking": true
+    }
+  },
+  "error_handling": {
+    "character_overflow": {
+      "action": "intelligent_truncation",
+      "preserve": "essential_elements",
+      "notify": true
+    },
+    "platform_mismatch": {
+      "action": "auto_convert",
+      "fallback": "generic_format",
+      "warn": true
+    },
+    "analysis_failure": {
+      "action": "retry_with_lower_depth",
+      "max_retries": 3,
+      "fallback_depth": "standard"
+    }
+  },
+  "future_compatibility": {
+    "version_tracking": true,
+    "auto_updates": true,
+    "backward_compatible": true,
+    "platform_monitoring": {
+      "suno_ai": "check_weekly",
+      "udio": "check_weekly",
+      "gpt": "check_monthly",
+      "claude": "check_monthly"
+    }
+  }
+}
